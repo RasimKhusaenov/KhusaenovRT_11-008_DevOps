@@ -1,0 +1,39 @@
+version: "3.9"
+
+networks:
+  my-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.10.0/28
+
+services:
+  nginx:
+    # image: Khusaenov_RT_nginx_26-04
+    build: ./nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - my-network
+    links:
+      - "db:new_db"
+      - "db:dev_db"
+  db:
+    # image: Khusaenov_RT_postgres_26-04
+    build:
+      context: ./postgresql
+      args:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=db
+    volumes:
+      - dbdata:/var/lib/postgresql/data/devops_course
+    environment:
+      - PGDATA=/var/lib/postgresql/data/devops_course
+    networks:
+      - my-network
+
+volumes:
+  dbdata:
