@@ -9,7 +9,7 @@ networks:
 
 services:
   nginx:
-    # image: Khusaenov_RT_nginx_26-04
+    image: khusaenov_rt_nginx_26-04
     build: ./nginx
     ports:
       - 8080:80
@@ -21,7 +21,7 @@ services:
       - "db:new_db"
       - "db:dev_db"
   db:
-    # image: Khusaenov_RT_postgres_26-04
+    image: khusaenov_rt_postgres_26-04
     build:
       context: ./postgresql
       args:
